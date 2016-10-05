@@ -6,10 +6,12 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using ReportService.Attributes;
 using ReportService.Helpers;
 
 namespace ReportService.Controllers
 {
+    [AuthTokenFilter]
     public class HonorsController : ApiController
     {
         // POST api/Honors/
