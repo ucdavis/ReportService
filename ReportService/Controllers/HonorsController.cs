@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using ReportService.Helpers;
 
@@ -12,7 +13,7 @@ namespace ReportService.Controllers
     public class HonorsController : ApiController
     {
         // POST api/Honors/
-        public byte[] Post([FromBody]Honors honors)
+        public HttpResponseMessage Post([FromBody]Honors honors)
         {
             var parameters = new Dictionary<string, string>();
             var reportName = "/Commencement/Honors";
@@ -39,8 +40,18 @@ namespace ReportService.Controllers
                 parameters.Add("highesthonors_90135", honors.HighestHonors90135.ToString());
                 parameters.Add("highesthonors_135", honors.HighestHonors135.ToString());
             }
+            
+            return ReturnBytes(ReportHelper.Get(reportName, parameters));
+        }
 
-            return ReportHelper.Get(reportName, parameters);
+        public HttpResponseMessage ReturnBytes(byte[] bytes)
+        {
+            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+            result.Content = new ByteArrayContent(bytes);
+            result.Content.Headers.ContentType =
+                new MediaTypeHeaderValue("application/octet-stream");
+
+            return result;
         }
     }
 
