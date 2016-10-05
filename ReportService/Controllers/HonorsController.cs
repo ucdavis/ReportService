@@ -44,7 +44,7 @@ namespace ReportService.Controllers
             return ReturnBytes(ReportHelper.Get(reportName, parameters));
         }
 
-        public HttpResponseMessage ReturnBytes(byte[] bytes)
+        private HttpResponseMessage ReturnBytes(byte[] bytes)
         {
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             result.Content = new ByteArrayContent(bytes);
